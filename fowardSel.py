@@ -1,6 +1,7 @@
 import node
 import numpy as np
 from queue import PriorityQueue
+import random
 
 
 def eval(Node:node):
