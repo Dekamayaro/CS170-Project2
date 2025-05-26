@@ -15,3 +15,19 @@ class node:
     def setFeatures(self, features):
         features = features
 
+    #the following are needed for doing comparisons between nodes and for adding them into the queue
+    def __eq__(self, other): #one for equal
+        return (self.accuracy == other.accuracy)
+    
+    def __ne__(self, other): #one for non-equal
+        return (self.accuracy != other.accuracy)
+
+    def __lt__(self, other): #one for less than
+        return (self.accuracy < other.accuracy)
+
+    def __gt__(self, other): #one for greater than
+        return (self.accuracy > other.accuracy)
+
+    #def __ne__(self, other): #another one for non-equal
+    #    return (self.parent != None)
+
