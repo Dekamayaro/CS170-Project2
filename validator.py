@@ -17,5 +17,26 @@ class validator:
         self.data = np.loadtxt(filename)
 
 
-    def validate ():
-        pass
+    def validate (self):
+        correct = 0
+        total = 0
+        for row in self.data.shape[0]: # iterate through the rows
+            total += 1
+            
+            #build test classifier:
+            self.classifier.trainSet = None
+
+            trainIds = list[range(0,self.data.shape[0])]
+            trainIds.remove(row) # make sure that our training Ids are all except for the one we want to exclude 
+
+            #training classifier to only be trained on those instances we want
+            self.classifier.train(trainIds)
+
+            testPred = self.classifier.test(row)
+
+            if(testPred == self.data[row][1]):
+                correct += 1
+        
+        return (correct / total)
+
+
