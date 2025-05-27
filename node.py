@@ -13,7 +13,7 @@ class node:
         self.accuracy = accuracy
 
     def setFeatures(self, features):
-        features = features
+        self.features = features
 
     #the following are needed for doing comparisons between nodes and for adding them into the queue
     def __eq__(self, other): #one for equal
