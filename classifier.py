@@ -12,8 +12,7 @@ class classifier:
     #functions:
     def __init__(self, fileName):
         self.data = np.loadtxt(fileName)
-        self.trainSet = np.array()
-        self.trainset = np.reshape(0, self.data.shape[1]) #making trainSet to have n columns (including class), but 0 rows 
+        self.trainSet = np.empty(0, self.data.shape[1]) #making trainSet to have n columns (including class), but 0 rows 
         self.numCols = self.data.shape[1]
 
 
@@ -23,5 +22,18 @@ class classifier:
             self.trainSet = np.vstack((self.trainSet, self.data[id:]))
             
     def test(self, id):
-        pass
+        test_instance = self.data[id, 1:] #only the feature values from data
+        best_dist = float('inf')
+        best_label = None
+        
+        for row in self.trainSet:
+            train_features = row[1:]
+            train_label = row[0]
+            euclid_dist = np.linalg.norm(test_instance - train_features)
+            
+            if dist < best_dist:
+                best_dist = euclid_dist
+                best_label = train_label
+        
+        return best_label
     
