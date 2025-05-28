@@ -11,6 +11,7 @@ def forwardSel(fileName):
     data = np.loadtxt(fileName)
     isStop = False
     maxAcc = 0
+    bestFeat = []
     selectedFeat = []
 
     #finding number of features, columns in data:
@@ -40,21 +41,31 @@ def forwardSel(fileName):
         #need to find the best feature now:
         currBest = featureQueue.get()
 
-        if(maxAcc >= currBest.accuracy):
-            isStop = True
-            print(f"(Warning: Decreased accuracy! )\n Search fininshed! The best subset of features is {selectedFeat}, which has an accuracy of {maxAcc}%")
+        # if((maxAcc >= currBest.accuracy) & ([] == remainingFeat)):
+        #     isStop = True
+        #     print(f"(Warning: Decreased accuracy! )\n Search fininshed! The best subset of features is {selectedFeat}, which has an accuracy of {maxAcc}%")
+        #     break
+        if([] == remainingFeat):
+            isStop = False
             break
-        else:
-            maxAcc = currBest.accuracy
+        elif(maxAcc >= currBest.accuracy):
             print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
             selectedFeat = currBest.features
-            tempRemainingFeat = []
-            for i in selectedFeat:
-                if i != feat:
-                    tempRemainingFeat.append(i)
-            remainingFeat = tempRemainingFeat
+        elif(maxAcc < currBest.accuracy):
+            maxAcc = currBest.accuracy
+            print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
+            bestFeat = selectedFeat = currBest.features
+
+        tempRemainingFeat = []
+        for i in selectedFeat:
+            if i != feat:
+                tempRemainingFeat.append(i)
+        remainingFeat = tempRemainingFeat
             #! not foolproof, will add repeat nums 
             #! also need to update numfeatures --> remove the feature chosen last 
+
+    print(f"Overall, Feature srt {bestFeat} was best, accuracy is {maxAcc}")
+    return maxAcc
         
 def backwardsElim(fileName):
     data = np.loadtxt(fileName)
