@@ -12,14 +12,14 @@ class classifier:
     #functions:
     def __init__(self, fileName):
         self.data = np.loadtxt(fileName)
-        self.trainSet = np.empty(0, self.data.shape[1]) #making trainSet to have n columns (including class), but 0 rows 
+        self.trainSet = np.empty((0, self.data.shape[1])) #making trainSet to have n columns (including class), but 0 rows 
         self.numCols = self.data.shape[1]
 
 
     def train(self, setID):
         
         for id in setID: #! I think this works, but I have no clue to be so honest
-            self.trainSet = np.vstack((self.trainSet, self.data[id:]))
+            self.trainSet = np.vstack((self.trainSet, self.data[id].reshape(1, -1)))
             
     def test(self, id):
         test_instance = self.data[id, 1:] #only the feature values from data
@@ -31,7 +31,7 @@ class classifier:
             train_label = row[0]
             euclid_dist = np.linalg.norm(test_instance - train_features)
             
-            if dist < best_dist:
+            if euclid_dist < best_dist:
                 best_dist = euclid_dist
                 best_label = train_label
         
