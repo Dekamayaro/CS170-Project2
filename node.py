@@ -23,10 +23,10 @@ class node:
         return (self.accuracy != other.accuracy)
 
     def __lt__(self, other): #one for less than
-        return (self.accuracy < other.accuracy)
+        return (self.accuracy > other.accuracy)
 
     def __gt__(self, other): #one for greater than
-        return (self.accuracy > other.accuracy)
+        return (self.accuracy < other.accuracy)
 
     #def __ne__(self, other): #another one for non-equal
     #    return (self.parent != None)
