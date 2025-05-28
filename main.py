@@ -2,8 +2,10 @@ import node
 import validator
 import classifier
 import part1
+import random
 
 def main():
+    random.seed(0)
     print("Welcome to Dmitry Sorokin and Kyle Chahal's Feature Selection Algorithm")
 
     num_features = int(input("Please enter the total number of features: "))
