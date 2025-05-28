@@ -33,7 +33,7 @@ class validator:
             self.classifier.train(trainIds)
 
             testPred = self.classifier.test(row)
-            print(f"Instance {row}: true={int(self.data[row][0])}, predicted={int(testPred)}")
+            
             if(testPred == self.data[row][0]):
                 correct += 1
         
