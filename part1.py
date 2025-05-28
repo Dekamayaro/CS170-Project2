@@ -8,14 +8,13 @@ def evaluate(Node:node):
     return round(random.uniform(35.0, 95.0), 2)
 
 def forwardSel(featuresInput):
-    #data = np.loadtxt(fileName)
-    isStop = False
     maxAcc = 0
     selectedFeat = []
+    bestFeat = []
 
     #finding number of features, columns in data:
     numFeatures = featuresInput
-    remainingFeat = list(range(1, numFeatures + 1))
+    initialFeat = remainingFeat = list(range(1, numFeatures + 1))
     featureQueue = PriorityQueue()
     print(f"Using no features and “random” evaluation, I get an accuracy of\n")
 
@@ -28,7 +27,7 @@ def forwardSel(featuresInput):
         for feat in remainingFeat:
             #find accuracy of selected feature(s):
             #currNode = node() #!add features to node --> still need to think of how though.
-            currFeatures = selectedFeat + [feat]
+            currFeatures = [feat] + selectedFeat
             currNode = node(features = currFeatures)
             currNode.setAccuracy(evaluate(currNode))
             featureQueue.put(currNode)
@@ -38,22 +37,26 @@ def forwardSel(featuresInput):
         #need to find the best feature now:
         currBest = featureQueue.get()
 
+        # if(maxAcc >= currBest.accuracy):
+        #     print(f"(Warning: Decreased accuracy! )\n Search fininshed! The best subset of features is {selectedFeat}, which has an accuracy of {maxAcc}%")
+        #     break
         if(maxAcc >= currBest.accuracy):
-            isStop = True
-            print(f"(Warning: Decreased accuracy! )\n Search fininshed! The best subset of features is {selectedFeat}, which has an accuracy of {maxAcc}%")
-            break
+            print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
+            selectedFeat = currBest.features
+            remainingFeat = list(set(initialFeat) - set(selectedFeat))
         else:
             maxAcc = currBest.accuracy
             print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
-            selectedFeat = currBest.features
+            bestFeat = selectedFeat = currBest.features
             remainingFeat = list(set(remainingFeat) - set(selectedFeat))
             #! not foolproof, will add repeat nums 
             #! also need to update numfeatures --> remove the feature chosen last 
+
+    print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {maxAcc}")
         
 def backwardsElim(featuresInput):
-    #data = np.loadtxt(fileName)
-    isStop = False
     maxAcc = 0
+    bestFeat = []
     selectedFeat = []
 
     #finding number of features, columns in data:
@@ -63,7 +66,7 @@ def backwardsElim(featuresInput):
     beginAcc = evaluate(node(list(range(1,numFeatures)))) #! need to include start node
     print(f"{beginAcc}% Beginning search.")
 
-    selectedFeat = remainingFeat = list(range(1, numFeatures + 1))
+    initialFeat = selectedFeat = remainingFeat = list(range(1, numFeatures + 1))
     featureQueue = PriorityQueue()
     print(selectedFeat)
     while len(selectedFeat) > 1:
@@ -80,10 +83,21 @@ def backwardsElim(featuresInput):
         currBest = featureQueue.get()
 
         if(maxAcc >= currBest.accuracy):
-            isStop = True
-            print(f"(Warning: Decreased accuracy! )\n Search fininshed! The best subset of features is {selectedFeat}, which has an accuracy of {maxAcc}%")
-            break
+            print(f"Feature set {currBest.features} was best, accuracy is {currBest.accuracy}%\n")
+            selectedFeat = currBest.features
+            remainingFeat = list(set(initialFeat) - set(selectedFeat))
         else:
             maxAcc = currBest.accuracy
             print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
-            selectedFeat = currBest.features
+            bestFeat = selectedFeat = currBest.features
+            remainingFeat = list(set(remainingFeat) - set(selectedFeat))
+
+    print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {maxAcc}")
+
+        # if(maxAcc >= currBest.accuracy):
+        #     print(f"(Warning: Decreased accuracy! )\n Search fininshed! The best subset of features is {selectedFeat}, which has an accuracy of {maxAcc}%")
+        #     break
+        # else:
+        #     maxAcc = currBest.accuracy
+        #     print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
+        #     selectedFeat = currBest.features
