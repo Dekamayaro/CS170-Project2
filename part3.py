@@ -27,6 +27,7 @@ def forwardSel(filename):
 
     while remainingFeat:
         currBest = None
+        featureQueue = PriorityQueue()
         for feat in remainingFeat:
             #find accuracy of selected feature(s):
             #currNode = node() #!add features to node --> still need to think of how though.
