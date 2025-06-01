@@ -7,8 +7,11 @@ import random
 
 
 def evaluate(Node:node, filename):
-    val = validator.validator(features = Node.features, Classifier = classifier.classifier(fileName = filename, selected_feat = Node.features), filename = filename)
-    return val.validate()
+    if([] == Node.features):
+        return round(random.uniform(35.0, 95.0), 2)
+    else:
+        val = validator.validator(features = Node.features, Classifier = classifier.classifier(fileName = filename, selected_feat = Node.features))
+        return val.validate()
 
 def forwardSel(filename):
     maxAcc = 0
@@ -22,7 +25,7 @@ def forwardSel(filename):
     print(f"Using no features and “random” evaluation, I get an accuracy of\n")
 
     #find begin acc:
-    beginAcc = evaluate(node(features = []), filename) #! need to include start node
+    beginAcc = evaluate(node(features = []), filename)
     print(f"{beginAcc}% Beginning search.")
 
     while remainingFeat:
@@ -30,7 +33,6 @@ def forwardSel(filename):
         featureQueue = PriorityQueue()
         for feat in remainingFeat:
             #find accuracy of selected feature(s):
-            #currNode = node() #!add features to node --> still need to think of how though.
             currFeatures = [feat] + selectedFeat
             currNode = node(features = currFeatures)
             currNode.setAccuracy(evaluate(currNode, filename))
@@ -50,8 +52,6 @@ def forwardSel(filename):
             print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
             bestFeat = selectedFeat = currBest.features
             remainingFeat = list(set(remainingFeat) - set(selectedFeat))
-            #! not foolproof, will add repeat nums 
-            #! also need to update numfeatures --> remove the feature chosen last 
 
     print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {maxAcc}")
     
