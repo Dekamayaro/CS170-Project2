@@ -55,42 +55,36 @@ def forwardSel(filename):
 
     print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {maxAcc}")
     
-def backwardsElim(featuresInput): #! unmodified for p3 yet
+def backwardsElim(fileName):
+    featureData = np.loadtxt(fileName)
+    isStop = False
     maxAcc = 0
-    bestFeat = []
-    selectedFeat = []
+    selectedFeat = remainingFeat = list(range(1, numFeatures + 1))
 
     #finding number of features, columns in data:
-    numFeatures = featuresInput
+    numFeatures = featureData.shape[1] - 1
 
     print(f"Using all features and \"random\" evaluation, I get an accuracy of\n")
-    beginAcc = evaluate(node(list(range(1,numFeatures)))) #! need to include start node
+    beginAcc = eval(node(list(range(1,numFeatures)))) #! need to include start node
     print(f"{beginAcc}% Beginning search.")
 
-    initialFeat = selectedFeat = remainingFeat = list(range(1, numFeatures + 1))
-    featureQueue = PriorityQueue()
-    print(selectedFeat)
     while len(selectedFeat) > 1:
         currBest = None
-
+        featureQueue = PriorityQueue()
         for feat in selectedFeat:
-            currFeatures = [f for f in selectedFeat if f != feat]
+            currFeatures = selectedFeat - [feat]
             currNode = node(features = currFeatures)
             currNode.setAccuracy(evaluate(currNode))
             featureQueue.put(currNode)
-            print(f"    Using feature(s) {currFeatures} accuracy is {currNode.accuracy}%\n")            
+            print(f"    Using feature(s) {feat} accuracy is {currNode.accuracy}%\n")            
         
         #need to find the best feature now:
         currBest = featureQueue.get()
 
         if(maxAcc >= currBest.accuracy):
-            print(f"Feature set {currBest.features} was best, accuracy is {currBest.accuracy}%\n")
+            print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
             selectedFeat = currBest.features
-            remainingFeat = list(set(initialFeat) - set(selectedFeat))
         else:
             maxAcc = currBest.accuracy
             print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
-            bestFeat = selectedFeat = currBest.features
-            remainingFeat = list(set(remainingFeat) - set(selectedFeat))
-
-    print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {maxAcc}")
+            remainingFeat = selectedFeat = currBest.features
