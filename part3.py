@@ -59,22 +59,24 @@ def backwardsElim(fileName):
     featureData = np.loadtxt(fileName)
     isStop = False
     maxAcc = 0
-    selectedFeat = remainingFeat = list(range(1, numFeatures + 1))
-
+    
     #finding number of features, columns in data:
     numFeatures = featureData.shape[1] - 1
+    selectedFeat = list(range(1, numFeatures + 1))
+
+    #finding number of features, columns in data:
 
     print(f"Using all features and \"random\" evaluation, I get an accuracy of\n")
-    beginAcc = eval(node(list(range(1,numFeatures)))) #! need to include start node
+    beginAcc = evaluate(node(features = list(range(1,numFeatures + 1))), fileName) #! need to include start node
     print(f"{beginAcc}% Beginning search.")
 
     while len(selectedFeat) > 1:
         currBest = None
         featureQueue = PriorityQueue()
         for feat in selectedFeat:
-            currFeatures = selectedFeat - [feat]
+            currFeatures = [f for f in selectedFeat if f != feat]
             currNode = node(features = currFeatures)
-            currNode.setAccuracy(evaluate(currNode))
+            currNode.setAccuracy(evaluate(currNode, fileName))
             featureQueue.put(currNode)
             print(f"    Using feature(s) {feat} accuracy is {currNode.accuracy}%\n")            
         
