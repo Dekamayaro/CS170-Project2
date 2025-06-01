@@ -2,6 +2,7 @@
 import numpy as np
 from math import dist #https://stackoverflow.com/questions/9414722/multidimensional-euclidean-distance-in-python
 from sklearn.preprocessing import MinMaxScaler
+from scipy.spatial.distance import euclidean
 
 class classifier:
     #variables
@@ -35,21 +36,17 @@ class classifier:
             self.trainSet = np.vstack((self.trainSet, self.data[id]))
             
     def test(self, id):
-        #test_instance = self.data[id, 1:] #only the feature values from data
-        # `test_instance` is extracting the selected features from the test data instance based on the
-        # `selected_feat` attribute. It selects only the specific features that are chosen for testing
-        # from the data instance.
         test_instance = self.data[id, self.selected_feat]
         best_dist = float('inf')
         best_label = None
         
         for row in self.trainSet:
-            #train_features = row[1:]
             train_features = row[self.selected_feat]
             train_label = row[0]
-            euclid_dist = np.linalg.norm(test_instance - train_features)
+            # euclid_dist = np.linalg.norm(test_instance - train_features)
+            euclid_dist = euclidean(test_instance, train_features)
             
-            if euclid_dist < best_dist:
+            if euclid_dist <= best_dist:
                 best_dist = euclid_dist
                 best_label = train_label
         

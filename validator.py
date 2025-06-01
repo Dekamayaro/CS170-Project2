@@ -12,10 +12,18 @@ class validator:
     features = None
 
 
-    def __init__ (self, features = [], Classifier:classifier = None, filename = ""): # type: ignore
+    # def __init__ (self, features = [], Classifier:classifier = None, filename = ""): # type: ignore
+    #     self.features = features
+    #     self.classifier = Classifier
+    #     self.data = np.loadtxt(filename)
+
+    def __init__ (self, features = [], Classifier:classifier = None): # type: ignore
         self.features = features
         self.classifier = Classifier
-        self.data = np.loadtxt(filename)
+        if(0 == len(Classifier.trainSet)):
+            self.data = Classifier.data
+        else:
+            self.data = Classifier.trainSet
 
 
     def validate (self):
