@@ -27,7 +27,7 @@ class classifier:
         if selected_feat is not None:
             self.selected_feat = selected_feat
         else:
-            self.selected_feat = list(range(1, self.numCols))
+            self.selected_feat = 0#list(range(1, self.numCols))
 
     def train(self, setID):
         
