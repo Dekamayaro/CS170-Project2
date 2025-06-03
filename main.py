@@ -41,8 +41,7 @@ def mainP3():
     if user_choice == 1:
         part3.forwardSel(filename)
     elif user_choice == 2:
-        pass
-        #part3.backwardsElim(filename)
+        part3.backwardsElim(filename)
     else:
         print("Invalid Option")
 
