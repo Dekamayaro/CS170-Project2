@@ -78,15 +78,18 @@ def backwardsElim(fileName):
             currNode = node(features = currFeatures)
             currNode.setAccuracy(evaluate(currNode, fileName))
             featureQueue.put(currNode)
-            print(f"    Using feature(s) {feat} accuracy is {currNode.accuracy}%\n")            
+            print(f"    Using feature(s) {currFeatures} accuracy is {currNode.accuracy}%\n")            
         
         #need to find the best feature now:
         currBest = featureQueue.get()
 
-        if(maxAcc >= currBest.accuracy):
-            print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
+        if(maxAcc > currBest.accuracy):
+            print(f"Feature set {currBest.features} was best, accuracy is {currBest.accuracy}%\n")
             selectedFeat = currBest.features
         else:
             maxAcc = currBest.accuracy
+            bestFeat = currBest.features
             print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
             remainingFeat = selectedFeat = currBest.features
+            
+    print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {maxAcc}")
