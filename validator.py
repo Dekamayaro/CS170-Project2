@@ -10,6 +10,7 @@ class validator:
     data = None
     classifier = None
     features = None
+    k = None
 
 
     # def __init__ (self, features = [], Classifier:classifier = None, filename = ""): # type: ignore
@@ -17,13 +18,15 @@ class validator:
     #     self.classifier = Classifier
     #     self.data = np.loadtxt(filename)
 
-    def __init__ (self, features = [], Classifier:classifier = None): # type: ignore
+    def __init__ (self, features = [], Classifier:classifier = None, k = 1): # type: ignore
         self.features = features
         self.classifier = Classifier
         if(0 == len(Classifier.trainSet)):
             self.data = Classifier.data
         else:
             self.data = Classifier.trainSet
+
+        self.k = k
 
 
     def validate (self):
@@ -40,9 +43,9 @@ class validator:
             #training classifier to only be trained on those instances we want
             self.classifier.train(trainIds)
 
-            testPred = self.classifier.test(row)
+            testPred = self.classifier.test(row, self.k)
             
-            if(testPred == self.data[row][0]):
+            if(testPred[0][0] == self.data[row][0]):
                 correct += 1
         
         return (correct / total)
