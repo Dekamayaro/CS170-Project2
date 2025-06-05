@@ -26,7 +26,7 @@ def forwardSel(filename):
 
     #find begin acc:
     beginAcc = evaluate(node(features = []), filename)
-    print(f"{beginAcc}% Beginning search.")
+    print(f"{beginAcc:.1f}% Beginning search.")
 
     while remainingFeat:
         currBest = None
@@ -37,23 +37,23 @@ def forwardSel(filename):
             currNode = node(features = currFeatures)
             currNode.setAccuracy(evaluate(currNode, filename))
             featureQueue.put(currNode)
-            print(f"    Using feature(s) {currFeatures} accuracy is {currNode.accuracy}%\n")
+            print(f"    Using feature(s) {currFeatures} accuracy is {100 * currNode.accuracy:.1f}%\n")
             
         
         #need to find the best feature now:
         currBest = featureQueue.get()
 
         if(maxAcc >= currBest.accuracy):
-            print(f"Feature set {currBest.features} was best, accuracy is {currBest.accuracy}%\n")
+            print(f"Feature set {currBest.features} was best, accuracy is {100 * currBest.accuracy:.1f}%\n")
             selectedFeat = currBest.features
             remainingFeat = list(set(initialFeat) - set(selectedFeat))
         else:
             maxAcc = currBest.accuracy
-            print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
+            print(f"Feature set {currBest.features} was best, accuracy is {100 * maxAcc:.1f}%\n")
             bestFeat = selectedFeat = currBest.features
             remainingFeat = list(set(remainingFeat) - set(selectedFeat))
 
-    print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {maxAcc}")
+    print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {100 * maxAcc:.1f}")
     
 def backwardsElim(fileName):
     featureData = np.loadtxt(fileName)
@@ -68,7 +68,7 @@ def backwardsElim(fileName):
 
     print(f"Using all features and \"random\" evaluation, I get an accuracy of\n")
     beginAcc = evaluate(node(features = list(range(1,numFeatures + 1))), fileName) #! need to include start node
-    print(f"{beginAcc}% Beginning search.")
+    print(f"{beginAcc:.1f}% Beginning search.")
 
     while len(selectedFeat) > 1:
         currBest = None
@@ -78,18 +78,18 @@ def backwardsElim(fileName):
             currNode = node(features = currFeatures)
             currNode.setAccuracy(evaluate(currNode, fileName))
             featureQueue.put(currNode)
-            print(f"    Using feature(s) {currFeatures} accuracy is {currNode.accuracy}%\n")            
+            print(f"    Using feature(s) {currFeatures} accuracy is {100 * currNode.accuracy:.1f}%\n")            
         
         #need to find the best feature now:
         currBest = featureQueue.get()
 
         if(maxAcc > currBest.accuracy):
-            print(f"Feature set {currBest.features} was best, accuracy is {currBest.accuracy}%\n")
+            print(f"Feature set {currBest.features} was best, accuracy is {100 * currBest.accuracy:.1f}%\n")
             selectedFeat = currBest.features
         else:
             maxAcc = currBest.accuracy
             bestFeat = currBest.features
-            print(f"Feature set {currBest.features} was best, accuracy is {maxAcc}%\n")
+            print(f"Feature set {currBest.features} was best, accuracy is {100 * maxAcc:.1f}%\n")
             remainingFeat = selectedFeat = currBest.features
             
-    print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {maxAcc}")
+    print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {100 * maxAcc:.1f}")

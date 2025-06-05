@@ -25,12 +25,14 @@ def main():
 def mainP3():
     print("Welcome to Dmitry Sorokin and Kyle Chahal's Feature Selection Algorithm\n\n")
 
-    print(f"Here is a list of avaliable dataasets:\n\t1) Small-Test-Dataset\n\t2) Large-Test-Dataset")
+    print(f"Here is a list of avaliable dataasets:\n\t1) Small-Test-Dataset\n\t2) Large-Test-Dataset\n\t3) Titanic")
     dataset = int(input("Please choose the number of the dataset you would like to use:"))
     if(1 == dataset):
         filename = "small-test-dataset.txt"
     elif(2 == dataset):
         filename = "large-test-dataset.txt"
+    elif(3 == dataset):
+        filename = "titanic clean.txt"
 
     print("\n Type the number of the algorithm you want to run")
     print("1) Forward Selection")
