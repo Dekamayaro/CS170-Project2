@@ -6,14 +6,14 @@ import classifier
 import random
 
 
-def evaluate(Node:node, filename):
+def evaluate(Node:node, filename, k):
     if([] == Node.features):
         return round(random.uniform(35.0, 95.0), 2)
     else:
-        val = validator.validator(features = Node.features, Classifier = classifier.classifier(fileName = filename, selected_feat = Node.features))
+        val = validator.validator(features = Node.features, Classifier = classifier.classifier(fileName = filename, selected_feat = Node.features), k = k)
         return val.validate()
 
-def forwardSel(filename):
+def forwardSel(filename, k):
     maxAcc = 0
     selectedFeat = []
     bestFeat = []
@@ -25,7 +25,7 @@ def forwardSel(filename):
     print(f"Using no features and “random” evaluation, I get an accuracy of\n")
 
     #find begin acc:
-    beginAcc = evaluate(node(features = []), filename)
+    beginAcc = evaluate(node(features = []), filename, k)
     print(f"{beginAcc:.1f}% Beginning search.")
 
     while remainingFeat:
@@ -35,7 +35,7 @@ def forwardSel(filename):
             #find accuracy of selected feature(s):
             currFeatures = [feat] + selectedFeat
             currNode = node(features = currFeatures)
-            currNode.setAccuracy(evaluate(currNode, filename))
+            currNode.setAccuracy(evaluate(currNode, filename, k))
             featureQueue.put(currNode)
             print(f"    Using feature(s) {currFeatures} accuracy is {100 * currNode.accuracy:.1f}%\n")
             
@@ -55,7 +55,7 @@ def forwardSel(filename):
 
     print(f"Overall, the best feature selection was: {bestFeat} with accuracy: {100 * maxAcc:.1f}")
     
-def backwardsElim(fileName):
+def backwardsElim(fileName, k):
     featureData = np.loadtxt(fileName)
     isStop = False
     maxAcc = 0
@@ -67,7 +67,7 @@ def backwardsElim(fileName):
     #finding number of features, columns in data:
 
     print(f"Using all features and \"random\" evaluation, I get an accuracy of\n")
-    beginAcc = evaluate(node(features = list(range(1,numFeatures + 1))), fileName) #! need to include start node
+    beginAcc = evaluate(node(features = list(range(1,numFeatures + 1))), fileName, k) #! need to include start node
     print(f"{beginAcc:.1f}% Beginning search.")
 
     while len(selectedFeat) > 1:
@@ -76,7 +76,7 @@ def backwardsElim(fileName):
         for feat in selectedFeat:
             currFeatures = [f for f in selectedFeat if f != feat]
             currNode = node(features = currFeatures)
-            currNode.setAccuracy(evaluate(currNode, fileName))
+            currNode.setAccuracy(evaluate(currNode, fileName, k))
             featureQueue.put(currNode)
             print(f"    Using feature(s) {currFeatures} accuracy is {100 * currNode.accuracy:.1f}%\n")            
         

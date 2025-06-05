@@ -39,11 +39,13 @@ def mainP3():
     print("2) Backward Elimination")
     
     user_choice = int(input())
+
+    k = int(input("Please enter the number of neighbors to compare to:"))
     
     if user_choice == 1:
-        part3.forwardSel(filename)
+        part3.forwardSel(filename, k)
     elif user_choice == 2:
-        part3.backwardsElim(filename)
+        part3.backwardsElim(filename, k)
     else:
         print("Invalid Option")
 

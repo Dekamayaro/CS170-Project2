@@ -3,6 +3,9 @@ import numpy as np
 from math import dist #https://stackoverflow.com/questions/9414722/multidimensional-euclidean-distance-in-python
 from sklearn.preprocessing import MinMaxScaler
 from scipy.spatial.distance import euclidean
+from heapq import heapify, heappush, heappop
+from collections import Counter
+
 
 class classifier:
     #variables
@@ -35,10 +38,14 @@ class classifier:
         for id in setID: #! I think this works, but I have no clue to be so honest
             self.trainSet = np.vstack((self.trainSet, self.data[id]))
             
-    def test(self, id):
+    def test(self, id, k):
         test_instance = self.data[id, self.selected_feat]
         best_dist = float('inf')
         best_label = None
+        listK = []
+
+        heap = []
+        heapify(heap)
         
         for row in self.trainSet:
             train_features = row[self.selected_feat]
@@ -49,6 +56,35 @@ class classifier:
             if euclid_dist <= best_dist:
                 best_dist = euclid_dist
                 best_label = train_label
-        
+
+            heappush(heap, (euclid_dist, train_label))
+
+        for i in range(k):
+                dist, currBest = heappop(heap)
+                listK.append(currBest)
+
+        best_label = Counter(listK).most_common(1)
+
+        # if(1 != k):
+        #     for i in range(k):
+        #         dist, currBest = heappop(heap)
+        #         listK.append(currBest)
+            
+        #     listK.sort()
+
+        #     best_label = listK[0]
+        #     best_count = 0
+        #     count = 0
+        #     for i in range(k):
+        #         if(best_label == listK[i]):
+        #             count += 1
+        #         elif(best_label != listK[i]):
+        #             if(count > best_count):
+        #                 best_count = count
+        #                 best_label = listK[i]
+        #             else:
+        #                 count = 1
+
+        #now, listK has the best k
         return best_label
     
