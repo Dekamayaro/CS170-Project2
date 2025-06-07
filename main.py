@@ -57,7 +57,7 @@ def accuracyPlot(filename, selected_feat):
         
     plt.figure()
     plt.plot(k_vals, accuracy, marker = 'o')
-    plt.title(f"KNN Accuracy (Forward Selection")
+    plt.title(f"KNN Accuracy (Forward Selection) ({filename})")
     plt.xlabel("K (Num of Neighbor)")
     plt.ylabel("Accuracy")
     plt.grid()
