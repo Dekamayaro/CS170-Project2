@@ -59,7 +59,7 @@ class classifier:
 
             heappush(heap, (euclid_dist, train_label))
 
-        for i in range(k):
+        for i in range(int(k)):
                 dist, currBest = heappop(heap)
                 listK.append(currBest)
 
