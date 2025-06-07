@@ -45,16 +45,17 @@ def plot_feature_scatter(filename, xAxis_feature, yAxis_feature, plotTitle, k):
     plt.show()
 
 def accuracyPlot(filename, selected_feat):
-    k_vals = [1.3,5,7]
+    k_vals = [1,3,5,7]
     
     accuracy = []
 
     for k in k_vals:
+        print(k)
         classifiedK = classifier(filename, selected_feat)
         validatedK = validator(selected_feat, classifiedK, k)
         accuracyK = validatedK.validate()
         accuracy.append(accuracyK)
-        
+        print(accuracyK)
     plt.figure()
     plt.plot(k_vals, accuracy, marker = 'o')
     plt.title(f"KNN Accuracy (Forward Selection) ({filename})")
@@ -119,9 +120,9 @@ def mainP3():
         # forward_features = [2, 3]
         # backward_features = [1, 4]
 
-        plot_feature_scatter("small-test-dataset.txt", 3, 5, "Small Dataset", k)
+        #plot_feature_scatter("small-test-dataset.txt", 3, 5, "Small Dataset", k)
         #plot_feature_scatter("large-test-dataset.txt", 15, 27, "Large Dataset", k)
-        accuracyPlot("titanic clean.txt", [2, 3])
+        accuracyPlot("titanic clean.txt", [1, 2, 3, 6])
     else:
         print("Invalid Option")
 
